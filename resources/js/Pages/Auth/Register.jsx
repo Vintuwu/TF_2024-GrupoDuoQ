@@ -7,7 +7,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+        nombre: '',
+        apellido: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -23,24 +24,41 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Registrarse" />
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="nombre" value="Nombre" />
 
                     <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
+                        id="nombre"
+                        name="nombre"
+                        value={data.nombre}
                         className="mt-1 block w-full"
-                        autoComplete="name"
+                        autoComplete="nombre"
                         isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData('nombre', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.nombre} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="apellido" value="Apellido" />
+
+                    <TextInput
+                        id="apellido"
+                        name="apellido"
+                        value={data.apellido}
+                        className="mt-1 block w-full"
+                        autoComplete="apellido"
+                        isFocused={true}
+                        onChange={(e) => setData('apellido', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.apellido} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -61,7 +79,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
                         id="password"
@@ -78,7 +96,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirmar contraseña" />
 
                     <TextInput
                         id="password_confirmation"
@@ -99,11 +117,11 @@ export default function Register() {
                         href={route('login')}
                         className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        Already registered?
+                        ¿Ya tienes una cuenta?
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        Registrarse
                     </PrimaryButton>
                 </div>
             </form>
