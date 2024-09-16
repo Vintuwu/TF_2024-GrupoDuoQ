@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partido extends Model
 {
+    use HasFactory;
+    
     protected $fillable = ['fecha', 'hora', 'ronda', 'puntaje_equipo_uno', 'puntaje_equipo_dos'];
 
     protected $casts = [

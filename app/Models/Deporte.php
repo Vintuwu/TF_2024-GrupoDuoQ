@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deporte extends Model
 {
+    use HasFactory;
+    
     protected $fillable = ['nombre', 'nombreImagen'];
     
     public function torneos()

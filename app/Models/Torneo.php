@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Torneo extends Model
 {
+    use HasFactory;
+    
     protected $fillable = ['nombre', 'fechaInicio', 'fechaFin', 'ubicacion'];
+    
     public function deporte()
     {
         return $this->belongsTo(Deporte::class);
