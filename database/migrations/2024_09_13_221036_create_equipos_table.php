@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->boolean('habilitado')->default(true);
             $table->foreignId('torneo_id')->constrained('torneos')->onDelete('cascade');
             $table->timestamps();
         });

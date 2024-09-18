@@ -6,6 +6,7 @@ use App\Http\Requests\SaveDeporteRequest;
 use App\Models\Deporte;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class DeporteController extends Controller
 {
@@ -24,8 +25,9 @@ class DeporteController extends Controller
      */
     public function create()
     {
-        return Inertia::Render('Deporte/Create');
+        return Inertia::render('Deporte/Create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -34,10 +36,15 @@ class DeporteController extends Controller
     {
         $data = $request->validated();
 
+        if ($request->hasFile('nombreImagen')) {
+            $data['nombreImagen'] = $request->file('nombreImagen')->store('deportes', 'public');
+        }
+
         Deporte::create($data);
 
         return to_route('deporte.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -62,17 +69,35 @@ class DeporteController extends Controller
     {
         $data = $request->validated();
 
+        // Verificar si se ha subido una nueva imagen
+        if ($request->hasFile('nombreImagen')) {
+            // Eliminar la imagen anterior si existe
+            if ($deporte->nombreImagen) {
+                Storage::disk('public')->delete($deporte->nombreImagen);
+            }
+
+            // Guardar la nueva imagen
+            $data['nombreImagen'] = $request->file('nombreImagen')->store('deportes', 'public');
+        }
+
         $deporte->update($data);
 
         return to_route('deporte.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Deporte $deporte)
     {
-        //Lógica de borrado
+        // Eliminar la imagen si existe
+        if ($deporte->nombreImagen) {
+            Storage::disk('public')->delete($deporte->nombreImagen);
+        }
+
+        $deporte->delete();
+
         return to_route('deporte.index');
     }
 }
