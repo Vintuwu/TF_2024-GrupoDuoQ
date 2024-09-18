@@ -30,7 +30,7 @@ export default function GeneralLayout({ header, children }) {
                                 <NavLink href={route('noticia.index')} active={route().current('noticia.index')}>
                                     Noticias
                                 </NavLink>
-                                {/* Puedes agregar más enlaces según las rutas disponibles */}
+                                
                             </div>
                         </div>
 
