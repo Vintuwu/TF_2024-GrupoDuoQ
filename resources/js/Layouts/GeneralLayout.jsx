@@ -6,19 +6,19 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 
 export default function GeneralLayout({ header, children }) {
-    const { auth } = usePage().props;  // Obtener autenticación desde props
+    const { auth } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
+                    <div className="flex justify-between h-20">
                         {/* Logo y enlaces de navegación */}
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="block h-16 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div>
 
@@ -43,7 +43,7 @@ export default function GeneralLayout({ header, children }) {
                                             <span className="inline-flex rounded-md">
                                                 <button
                                                     type="button"
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-md leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                                 >
                                                     {auth.user.name}
 
@@ -66,7 +66,7 @@ export default function GeneralLayout({ header, children }) {
                                         <Dropdown.Content>
                                             <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                             <Dropdown.Link href={route('logout')} method="post" as="button">
-                                                Log Out
+                                                Cerrar sesión
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>
@@ -74,10 +74,10 @@ export default function GeneralLayout({ header, children }) {
                             ) : (
                                 <div className="flex items-center space-x-4">
                                     <NavLink href={route('login')} active={route().current('login')}>
-                                        Login
+                                        Iniciar sesión
                                     </NavLink>
                                     <NavLink href={route('register')} active={route().current('register')}>
-                                        Register
+                                        Registrarse
                                     </NavLink>
                                 </div>
                             )}
@@ -132,14 +132,14 @@ export default function GeneralLayout({ header, children }) {
                                 <div className="mt-3 space-y-1">
                                     <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
                                     <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                        Log Out
+                                        Cerrar sesión
                                     </ResponsiveNavLink>
                                 </div>
                             </div>
                         ) : (
                             <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('login')}>Login</ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('register')}>Register</ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('login')}>Iniciar sesión</ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('register')}>Registrarse</ResponsiveNavLink>
                             </div>
                         )}
                     </div>
