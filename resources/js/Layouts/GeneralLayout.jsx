@@ -18,7 +18,7 @@ export default function GeneralLayout({ header, children }) {
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-16 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="block h-16 w-16 fill-current text-gray-800" />
                                 </Link>
                             </div>
 
@@ -35,7 +35,8 @@ export default function GeneralLayout({ header, children }) {
                         </div>
 
                         {/* Usuario logueado o no logueado */}
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
+                        <div className="hidden sm:flex sm:ms-6">
+                            
                             {auth.user ? (
                                 <div className="ms-3 relative">
                                     <Dropdown>
@@ -43,9 +44,9 @@ export default function GeneralLayout({ header, children }) {
                                             <span className="inline-flex rounded-md">
                                                 <button
                                                     type="button"
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-md leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                    className="inline-flex items-center px-3 p-2 mt-6 border border-transparent text-md leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                                 >
-                                                    {auth.user.name}
+                                                    {auth.user.nombre} {auth.user.apellido}
 
                                                     <svg
                                                         className="ms-2 -me-0.5 h-4 w-4"
@@ -64,7 +65,7 @@ export default function GeneralLayout({ header, children }) {
                                         </Dropdown.Trigger>
 
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                            <Dropdown.Link href={route('profile.edit')}>Perfil</Dropdown.Link>
                                             <Dropdown.Link href={route('logout')} method="post" as="button">
                                                 Cerrar sesión
                                             </Dropdown.Link>
@@ -72,7 +73,7 @@ export default function GeneralLayout({ header, children }) {
                                     </Dropdown>
                                 </div>
                             ) : (
-                                <div className="flex items-center space-x-4">
+                                <div className="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink href={route('login')} active={route().current('login')}>
                                         Iniciar sesión
                                     </NavLink>

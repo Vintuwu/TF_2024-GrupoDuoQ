@@ -26,7 +26,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Registrarse" />
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} noValidate>
                 <div>
                     <InputLabel htmlFor="nombre" value="Nombre" />
 
@@ -53,7 +53,6 @@ export default function Register() {
                         value={data.apellido}
                         className="mt-1 block w-full"
                         autoComplete="apellido"
-                        isFocused={true}
                         onChange={(e) => setData('apellido', e.target.value)}
                         required
                     />

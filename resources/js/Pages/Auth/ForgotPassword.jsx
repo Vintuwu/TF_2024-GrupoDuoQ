@@ -17,7 +17,7 @@ export default function ForgotPassword({ status }) {
 
     return (
         <GuestLayout>
-            <Head title="Forgot Password" />
+            <Head title="Has olvidado tu contraseña" />
 
             <div className="mb-4 text-sm text-gray-600">
             ¿Olvidaste tu contraseña? Ningún problema. Simplemente háganos saber su dirección de correo electrónico y le enviaremos un enlace para restablecer su contraseña.
@@ -25,7 +25,7 @@ export default function ForgotPassword({ status }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} noValidate>
                 <TextInput
                     id="email"
                     type="email"
@@ -40,7 +40,7 @@ export default function ForgotPassword({ status }) {
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Mandar email
+                        Enviar email
                     </PrimaryButton>
                 </div>
             </form>

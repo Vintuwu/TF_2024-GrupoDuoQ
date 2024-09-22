@@ -26,7 +26,7 @@ export default function ConfirmPassword() {
                 Ésta es un área segura de la página. Por favor confirme su contraseña para continuar.
             </div>
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} noValidate>
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Contraseña" />
 

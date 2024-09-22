@@ -1,4 +1,5 @@
 import React from "react";
+import SuccessButton from "@/Components/SuccessButton";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
@@ -68,15 +69,10 @@ export default function Create() {
                             </p>
                         )}
                     </div>
-
+                    
                     {/* Botón de Enviar */}
                     <div className="flex items-center justify-between">
-                        <button
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        >
-                            Crear Deporte
-                        </button>
+                        <SuccessButton >Crear deporte</SuccessButton>
                     </div>
                 </form>
             </div>
