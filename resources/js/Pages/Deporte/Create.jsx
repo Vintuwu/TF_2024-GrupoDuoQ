@@ -1,5 +1,6 @@
 import React from "react";
 import SuccessButton from "@/Components/SuccessButton";
+import FileUpload from "@/Components/FileUpload";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
@@ -38,10 +39,10 @@ export default function Create() {
                             value={data.nombre}
                             onChange={(e) => setData("nombre", e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Fútbol, Baloncesto, etc."
+                            placeholder="Fútbol, Básquet, etc."
                         />
                         {errors.nombre && (
-                            <p className="text-red-500 text-xs mt-1">
+                            <p className="text-red-500 text-md mt-1">
                                 {errors.nombre}
                             </p>
                         )}
@@ -55,21 +56,14 @@ export default function Create() {
                         >
                             Imagen del Deporte
                         </label>
-                        <input
-                            type="file"
-                            id="nombreImagen"
-                            onChange={(e) =>
-                                setData("nombreImagen", e.target.files[0])
-                            }
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
+                        <FileUpload onFileChange={(file) => setData("nombreImagen", file)} />
                         {errors.nombreImagen && (
-                            <p className="text-red-500 text-xs mt-1">
+                            <p className="text-red-500 text-md mt-1">
                                 {errors.nombreImagen}
                             </p>
                         )}
                     </div>
-                    
+
                     {/* Botón de Enviar */}
                     <div className="flex items-center justify-between">
                         <SuccessButton >Crear deporte</SuccessButton>

@@ -41,6 +41,11 @@ class DeporteController extends Controller
     {
         $data = $request->validated();
 
+        $request->validate([
+            'nombre' => 'required|unique:deportes,nombre',
+            'nombreImagen' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+        
         if ($request->hasFile('nombreImagen')) {
             $data['nombreImagen'] = $request->file('nombreImagen')->store('deportes', 'public');
         }

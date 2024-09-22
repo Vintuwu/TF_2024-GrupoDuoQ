@@ -191,7 +191,8 @@ return [
     'attributes' => [
         'password' => 'contraseña',
         'email' => 'correo electrónico',
-        'current_password' => 'contraseña actual'
+        'current_password' => 'contraseña actual',
+        'nombreImagen' => 'imagen',
     ],
 
 ];

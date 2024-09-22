@@ -62,7 +62,6 @@ export default function UpdateProfileInformation({
                 value={data.apellido}
                 onChange={(e) => setData("apellido", e.target.value)}
                 required
-                isFocused
                 autoComplete="apellido"
             />
 

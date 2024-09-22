@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolSeeder::class,
-            DeporteSeeder::class
+            DeporteSeeder::class,
+            UserRolSeeder::class
         ]);
         // // User::factory(10)->create();
 
