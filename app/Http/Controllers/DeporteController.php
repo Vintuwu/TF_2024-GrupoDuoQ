@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveDeporteRequest;
 use App\Models\Deporte;
+use App\Models\User;
+use App\Models\UserRol;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -16,8 +18,9 @@ class DeporteController extends Controller
     public function index()
     {
         $deportes = Deporte::get();
+        $userRoles = UserRol::get();
 
-        return Inertia::render('Deporte/Index', compact('deportes'));
+        return Inertia::render('Deporte/Index', compact('deportes', 'userRoles'));
     }
 
     /**
@@ -25,6 +28,8 @@ class DeporteController extends Controller
      */
     public function create()
     {
+        // $userRoles = UserRol::get();
+
         return Inertia::render('Deporte/Create');
     }
 

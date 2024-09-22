@@ -15,6 +15,8 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\TorneoController;
 use App\Models\AdministradorDeportivo;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,8 +24,6 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -45,6 +45,18 @@ Route::resource('categoria', CategoriaController::class)->parameters([
 ]);
 Route::resource('comentario', ComentarioController::class);
 Route::resource('deporte', DeporteController::class);
+
+//Confirmo que el usuario que quiera entrar está logeado y al mismo tiempo que tenga el rol de Administrador//id=1
+Route::middleware('auth')->group(function () {
+    Route::get('/deporte/create', function (){
+        $rol = DB::table('user_rol')->where('user_id', Auth::user()->id)->where('rol_id', 1)->exists();
+        if ($rol){
+            return (new DeporteController())->create();
+        }
+        return redirect('/');
+    })->name('deporte.create');
+});
+
 Route::resource('equipo', EquipoController::class);
 Route::resource('estado', EstadoController::class);
 Route::resource('jugador', JugadorController::class);

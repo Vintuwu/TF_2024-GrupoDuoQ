@@ -38,6 +38,7 @@ export default function GeneralLayout({ header, children }) {
                         <div className="hidden sm:flex sm:ms-6">
                             
                             {auth.user ? (
+                                console.log(auth.user),
                                 <div className="ms-3 relative">
                                     <Dropdown>
                                         <Dropdown.Trigger>
