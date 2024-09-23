@@ -13,6 +13,8 @@ use App\Http\Controllers\PeriodistaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TorneoController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\RoleMiddleware;
 use App\Models\AdministradorDeportivo;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -69,5 +71,9 @@ Route::resource('periodista', PeriodistaController::class)->parameters([
 ]);
 Route::resource('rol', RolController::class);
 Route::resource('torneo', TorneoController::class);
+Route::middleware('auth')->group(function(){
+    Route::resource('user', UserController::class)->middleware(RoleMiddleware::class);
+    Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
+});
 
 require __DIR__.'/auth.php';

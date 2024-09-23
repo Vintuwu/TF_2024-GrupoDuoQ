@@ -3,7 +3,6 @@ import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 
 export default function Index({ deportes, userRoles }) {
-    console.log(userRoles);
     const { auth } = usePage().props;
     let userRol
     if (auth.user){
@@ -44,12 +43,9 @@ export default function Index({ deportes, userRoles }) {
                 </div>
                 
                 {auth.user && userRol.rol_id == 1 ?
-                    (
-                        console.log(auth.user),
-                        <Link href={route("deporte.create")} className="underline font-bold text-xl">
-                            Crear deporte
-                        </Link>
-                    )
+                    <Link href={route("deporte.create")} className="underline font-bold text-xl">
+                        Crear deporte
+                    </Link>
                 :
                     null
                 }
