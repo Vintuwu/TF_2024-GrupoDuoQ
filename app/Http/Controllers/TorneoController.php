@@ -7,7 +7,7 @@ use App\Models\Torneo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class TorneoController extends Controller
+class TorneoController extends BaseController
 {
     /**
      * Display a listing of the resource.

@@ -7,7 +7,7 @@ use App\Models\Partido;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PartidoController extends Controller
+class PartidoController extends BaseController
 {
     /**
      * Display a listing of the resource.

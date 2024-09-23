@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { useState } from "react";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function GeneralLayout({ header, children }) {
-    const { auth } = usePage().props;
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
+    const { userRoles, auth } = usePage().props;
+    let tieneRol;
+    if (auth.user) {
+        tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
+    }
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
@@ -23,20 +27,31 @@ export default function GeneralLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                
-                                <NavLink href={route('deporte.index')} active={route().current('deporte.index')}>
+                                <NavLink
+                                    href={route("deporte.index")}
+                                    active={route().current("deporte.index")}
+                                >
                                     Deportes
                                 </NavLink>
-                                <NavLink href={route('noticia.index')} active={route().current('noticia.index')}>
+                                <NavLink
+                                    href={route("noticia.index")}
+                                    active={route().current("noticia.index")}
+                                >
                                     Noticias
                                 </NavLink>
-                                
+                                {auth.user && tieneRol(1) && (
+                                    <NavLink
+                                    href={route("user.index")}
+                                    active={route().current("user.index")}
+                                >
+                                    Usuarios
+                                </NavLink>
+                                )}
                             </div>
                         </div>
 
                         {/* Usuario logueado o no logueado */}
                         <div className="hidden sm:flex sm:ms-6">
-                            
                             {auth.user ? (
                                 <div className="ms-3 relative">
                                     <Dropdown>
@@ -46,8 +61,8 @@ export default function GeneralLayout({ header, children }) {
                                                     type="button"
                                                     className="inline-flex items-center px-3 p-2 mt-6 border border-transparent text-md leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                                 >
-                                                    {auth.user.nombre} {auth.user.apellido}
-
+                                                    {auth.user.nombre}{" "}
+                                                    {auth.user.apellido}
                                                     <svg
                                                         className="ms-2 -me-0.5 h-4 w-4"
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -65,8 +80,16 @@ export default function GeneralLayout({ header, children }) {
                                         </Dropdown.Trigger>
 
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('profile.edit')}>Perfil</Dropdown.Link>
-                                            <Dropdown.Link href={route('logout')} method="post" as="button">
+                                            <Dropdown.Link
+                                                href={route("profile.edit")}
+                                            >
+                                                Perfil
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("logout")}
+                                                method="post"
+                                                as="button"
+                                            >
                                                 Cerrar sesión
                                             </Dropdown.Link>
                                         </Dropdown.Content>
@@ -74,10 +97,16 @@ export default function GeneralLayout({ header, children }) {
                                 </div>
                             ) : (
                                 <div className="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink href={route('login')} active={route().current('login')}>
+                                    <NavLink
+                                        href={route("login")}
+                                        active={route().current("login")}
+                                    >
                                         Iniciar sesión
                                     </NavLink>
-                                    <NavLink href={route('register')} active={route().current('register')}>
+                                    <NavLink
+                                        href={route("register")}
+                                        active={route().current("register")}
+                                    >
                                         Registrarse
                                     </NavLink>
                                 </div>
@@ -87,19 +116,36 @@ export default function GeneralLayout({ header, children }) {
                         {/* Botón para mostrar el menú móvil */}
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
-                                onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
+                                onClick={() =>
+                                    setShowingNavigationDropdown(
+                                        (previousState) => !previousState
+                                    )
+                                }
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                             >
-                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <svg
+                                    className="h-6 w-6"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path
-                                        className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
+                                        className={
+                                            !showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
+                                        className={
+                                            showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
@@ -112,13 +158,23 @@ export default function GeneralLayout({ header, children }) {
                 </div>
 
                 {/* Navegación móvil */}
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
+                <div
+                    className={
+                        (showingNavigationDropdown ? "block" : "hidden") +
+                        " sm:hidden"
+                    }
+                >
                     <div className="pt-2 pb-3 space-y-1">
-                        
-                        <ResponsiveNavLink href={route('deporte.index')} active={route().current('deporte.index')}>
+                        <ResponsiveNavLink
+                            href={route("deporte.index")}
+                            active={route().current("deporte.index")}
+                        >
                             Deportes
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('noticia.index')} active={route().current('noticia.index')}>
+                        <ResponsiveNavLink
+                            href={route("noticia.index")}
+                            active={route().current("noticia.index")}
+                        >
                             Noticias
                         </ResponsiveNavLink>
                     </div>
@@ -127,20 +183,36 @@ export default function GeneralLayout({ header, children }) {
                         {auth.user ? (
                             <div>
                                 <div className="px-4">
-                                    <div className="font-medium text-base text-gray-800">{auth.user.name}</div>
-                                    <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                                    <div className="font-medium text-base text-gray-800">
+                                        {auth.user.name}
+                                    </div>
+                                    <div className="font-medium text-sm text-gray-500">
+                                        {auth.user.email}
+                                    </div>
                                 </div>
                                 <div className="mt-3 space-y-1">
-                                    <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                                    <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                                    <ResponsiveNavLink
+                                        href={route("profile.edit")}
+                                    >
+                                        Profile
+                                    </ResponsiveNavLink>
+                                    <ResponsiveNavLink
+                                        method="post"
+                                        href={route("logout")}
+                                        as="button"
+                                    >
                                         Cerrar sesión
                                     </ResponsiveNavLink>
                                 </div>
                             </div>
                         ) : (
                             <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('login')}>Iniciar sesión</ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('register')}>Registrarse</ResponsiveNavLink>
+                                <ResponsiveNavLink href={route("login")}>
+                                    Iniciar sesión
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route("register")}>
+                                    Registrarse
+                                </ResponsiveNavLink>
                             </div>
                         )}
                     </div>
@@ -149,7 +221,9 @@ export default function GeneralLayout({ header, children }) {
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {header}
+                    </div>
                 </header>
             )}
 

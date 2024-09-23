@@ -15,6 +15,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\TorneoController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\WelcomeController;
 use App\Models\AdministradorDeportivo;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -22,12 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -48,16 +44,6 @@ Route::resource('categoria', CategoriaController::class)->parameters([
 Route::resource('comentario', ComentarioController::class);
 Route::resource('deporte', DeporteController::class);
 
-//Confirmo que el usuario que quiera entrar está logeado y al mismo tiempo que tenga el rol de Administrador//id=1
-Route::middleware('auth')->group(function () {
-    Route::get('/deporte/create', function (){
-        $rol = DB::table('user_rol')->where('user_id', Auth::user()->id)->where('rol_id', 1)->exists();
-        if ($rol){
-            return (new DeporteController())->create();
-        }
-        return redirect('/');
-    })->name('deporte.create');
-});
 
 Route::resource('equipo', EquipoController::class);
 Route::resource('estado', EstadoController::class);
@@ -74,6 +60,7 @@ Route::resource('torneo', TorneoController::class);
 Route::middleware('auth')->group(function(){
     Route::resource('user', UserController::class)->middleware(RoleMiddleware::class);
     Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class);
 });
 
 require __DIR__.'/auth.php';

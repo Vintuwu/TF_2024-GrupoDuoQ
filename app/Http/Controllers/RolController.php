@@ -7,7 +7,7 @@ use App\Models\Rol;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class RolController extends Controller
+class RolController extends BaseController
 {
     /**
      * Display a listing of the resource.

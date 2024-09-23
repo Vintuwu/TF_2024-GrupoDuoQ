@@ -7,7 +7,7 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class CategoriaController extends Controller
+class CategoriaController extends BaseController
 {
     /**
      * Display a listing of the resource.

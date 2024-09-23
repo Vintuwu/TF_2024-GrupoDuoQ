@@ -3,7 +3,6 @@ import { Head, Link } from '@inertiajs/react'
 import React from 'react'
 
 const Index = (users) => {
-    console.log(users)
   return (
     <GeneralLayout>
             <Head title="Cambiar Roles" />

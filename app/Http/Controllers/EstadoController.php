@@ -7,7 +7,7 @@ use App\Models\Estado;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class EstadoController extends Controller
+class EstadoController extends BaseController
 {
     /**
      * Display a listing of the resource.

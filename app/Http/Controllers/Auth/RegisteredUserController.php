@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Models\User;
 use App\Models\UserRol;
 use Illuminate\Auth\Events\Registered;
@@ -14,7 +14,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class RegisteredUserController extends BaseController
 {
     /**
      * Display the registration view.

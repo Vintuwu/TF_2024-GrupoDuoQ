@@ -7,7 +7,7 @@ use App\Models\AdministradorDeportivo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AdministradorDeportivoController extends Controller
+class AdministradorDeportivoController extends BaseController
 {
 
     /**

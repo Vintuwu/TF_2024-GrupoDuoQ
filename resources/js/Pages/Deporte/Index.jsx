@@ -2,11 +2,11 @@ import React from "react";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 
-export default function Index({ deportes, userRoles }) {
-    const { auth } = usePage().props;
-    let userRol
-    if (auth.user){
-        userRol = userRoles.find(rol => rol.user_id == auth.user.id);
+export default function Index({ deportes }) {
+    const { userRoles, auth } = usePage().props;
+    let tieneRol
+    if (auth.user) {
+        tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
     }
     return (
         <GeneralLayout>
@@ -41,14 +41,17 @@ export default function Index({ deportes, userRoles }) {
                         </Link>
                     ))}
                 </div>
-                
-                {auth.user && userRol.rol_id == 1 ?
-                    <Link href={route("deporte.create")} className="underline font-bold text-xl">
-                        Crear deporte
-                    </Link>
-                :
-                    null
-                }
+
+                {auth.user && tieneRol(1) && (
+                    <div>
+                        <Link
+                            href={route("deporte.create")}
+                            className="underline font-bold text-xl"
+                        >
+                            Crear deporte
+                        </Link>
+                    </div>
+                )}
             </div>
         </GeneralLayout>
     );

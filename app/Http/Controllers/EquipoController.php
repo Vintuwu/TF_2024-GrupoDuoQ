@@ -7,7 +7,7 @@ use App\Models\Equipo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class EquipoController extends Controller
+class EquipoController extends BaseController
 {
     /**
      * Display a listing of the resource.

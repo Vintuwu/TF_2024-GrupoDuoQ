@@ -7,7 +7,7 @@ use App\Models\Arbitro;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ArbitroController extends Controller
+class ArbitroController extends BaseController
 {
     /**
      * Display a listing of the resource.

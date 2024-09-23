@@ -7,7 +7,7 @@ use App\Models\Comentario;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ComentarioController extends Controller
+class ComentarioController extends BaseController
 {
     /**
      * Display a listing of the resource.

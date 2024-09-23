@@ -7,7 +7,7 @@ use App\Models\Jugador;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class JugadorController extends Controller
+class JugadorController extends BaseController
 {
     /**
      * Display a listing of the resource.

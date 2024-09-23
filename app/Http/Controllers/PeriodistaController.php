@@ -7,7 +7,7 @@ use App\Models\Periodista;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PeriodistaController extends Controller
+class PeriodistaController extends BaseController
 {
     /**
      * Display a listing of the resource.

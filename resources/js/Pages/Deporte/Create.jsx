@@ -18,7 +18,7 @@ export default function Create() {
 
     return (
         <GeneralLayout>
-            <Head title="Crear deporte" />
+            <Head title="Crear deporte"/>
             <div className="max-w-2xl mx-auto bg-white shadow-md rounded px-8 py-6 mt-10">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6">
                     Crear Deporte
