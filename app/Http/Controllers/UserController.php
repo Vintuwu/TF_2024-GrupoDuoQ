@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdministradorDeportivo;
+use App\Models\Deporte;
 use App\Models\Rol;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,9 +50,11 @@ class UserController extends BaseController
     public function edit(User $user)
     {
         $user->load('roles');
+        $admRol = AdministradorDeportivo::where('user_id', $user->id)->first();
         $roles = Rol::get();
+        $deportes = Deporte::get();
         
-        return Inertia::render('User/Edit', compact('user', 'roles'));
+        return Inertia::render('User/Edit', compact('user', 'roles', 'deportes', 'admRol'));
     }
 
     /**
@@ -61,11 +65,19 @@ class UserController extends BaseController
         $validatedData = $request->validate([
             'roles' => 'required|array',   // Asegurarse de que roles es un array
             'roles.*' => 'integer|exists:roles,id',  // Cada valor debe ser un ID de rol existente
+            'deporteAdm' => 'nullable|integer|exists:deportes,id'
         ]);
 
 
         // Sincronizar los roles del usuario
         $user->roles()->sync($validatedData['roles']);  // Actualizar los roles del usuario
+
+        if (!$validatedData['deporteAdm'] == ''){
+            AdministradorDeportivo::updateOrCreate(
+                ['user_id' => $user->id],  // Condición para buscar el registro existente
+                ['deporte_id' => $validatedData['deporteAdm']]  // Datos a actualizar
+            );
+        }
 
         // Redirigir de vuelta con un mensaje de éxito
         return redirect()->back()->with('success', 'Roles actualizados correctamente');

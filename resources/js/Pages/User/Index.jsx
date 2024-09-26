@@ -41,9 +41,20 @@ const Index = (users) => {
                                         <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center'>
                                             {usuario.email}
                                         </td>
-                                        <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center'>
-                                            <Link href={route('user.edit', usuario)}>
+                                        <td className='px-6 py-2 font-medium flex justify-around text-gray-900 whitespace-nowrap text-center'>
+                                            <Link 
+                                              className='py-2 px-3 bg-blue-500 shadow-md rounded-md font-bold text-white ring-1 ring-blue-600 hover:bg-blue-600 hover:ring-blue-700 transition-all duration-200'
+                                              href={route('user.edit', usuario)}
+                                              as='button'
+                                            >
                                                 Editar
+                                            </Link>
+                                            <Link
+                                              className='py-2 px-3 bg-red-500 shadow-md rounded-md font-bold text-white ring-1 ring-red-600 hover:bg-red-600 hover:ring-red-700 transition-all duration-200'
+                                              href={route('user.destroy', usuario.id)}
+                                              as='button'
+                                            >
+                                              Eliminar
                                             </Link>
                                         </td>
                                     </tr>

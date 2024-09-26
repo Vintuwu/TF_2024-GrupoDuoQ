@@ -19,7 +19,7 @@ class DeporteController extends BaseController
     {
         $deportes = Deporte::get();
 
-        return Inertia::render('Deporte/Index', compact('deportes'));
+        return Inertia::render('Deporte/Index', ['deportes' => $deportes]);
     }
 
     /**

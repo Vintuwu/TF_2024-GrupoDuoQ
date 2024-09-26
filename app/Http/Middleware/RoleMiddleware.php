@@ -14,7 +14,7 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, int $role): Response
     {
         if (!Auth::check()){
             return redirect('login');
@@ -23,7 +23,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         //Verifico que user sea Admin
-        if (!$user->roles()->where('rol_id', 1)->exists()){
+        if (!$user->roles()->where('rol_id', $role)->exists()){
             return redirect('/');
         }
         return $next($request);

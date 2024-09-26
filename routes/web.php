@@ -42,9 +42,9 @@ Route::resource('categoria', CategoriaController::class)->parameters([
     'categoria' => 'categoria'
 ]);
 Route::resource('comentario', ComentarioController::class);
-Route::resource('deporte', DeporteController::class);
-
-
+Route::resource('deporte', DeporteController::class)->parameters([
+    'deporte' => 'deporte:nombre'
+]);
 Route::resource('equipo', EquipoController::class);
 Route::resource('estado', EstadoController::class);
 Route::resource('jugador', JugadorController::class);
@@ -56,11 +56,13 @@ Route::resource('periodista', PeriodistaController::class)->parameters([
     'periodista' => 'periodista'
 ]);
 Route::resource('rol', RolController::class);
-Route::resource('torneo', TorneoController::class);
+Route::group(['prefix' => 'deporte/{deporte:nombre}'], function() {
+    Route::resource('torneo', TorneoController::class);
+});
 Route::middleware('auth')->group(function(){
-    Route::resource('user', UserController::class)->middleware(RoleMiddleware::class);
-    Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
-    Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class);
+    Route::resource('user', UserController::class)->middleware(RoleMiddleware::class.':1');
+    //Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class.':1');
 });
 
 require __DIR__.'/auth.php';
