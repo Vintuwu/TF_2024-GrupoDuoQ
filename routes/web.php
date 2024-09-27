@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function(){
         'deporte' => 'deporte:nombre'
     ]);
 });
-Route::get('/deporte/{deporte}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
+Route::get('/deporte/{deporte:nombre}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
 
 
 require __DIR__.'/auth.php';

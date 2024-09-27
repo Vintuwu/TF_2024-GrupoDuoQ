@@ -41,7 +41,7 @@ class DeporteController extends BaseController
             'nombre' => 'required|unique:deportes,nombre',
             'nombreImagen' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
-        
+
         if ($request->hasFile('nombreImagen')) {
             $data['nombreImagen'] = $request->file('nombreImagen')->store('deportes', 'public');
         }
@@ -57,9 +57,13 @@ class DeporteController extends BaseController
      */
     public function show(Deporte $deporte)
     {
-        $torneos = $deporte->torneos;
+        // Cargar torneos junto con estado y categoría
+        $torneos = $deporte->torneos()->with(['estado', 'categoria'])->get();
 
-    return Inertia::render('Deporte/Show', ['torneos' => $torneos, 'deporte' => $deporte]);
+        return Inertia::render('Deporte/Show', [
+            'torneos' => $torneos,
+            'deporte' => $deporte,
+        ]);
     }
 
     /**

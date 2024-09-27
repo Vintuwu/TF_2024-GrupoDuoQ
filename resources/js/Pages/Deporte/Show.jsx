@@ -5,9 +5,11 @@ import { Head, Link, usePage } from "@inertiajs/react";
 export default function Index({ torneos, deporte }) {
     const { userRoles, auth } = usePage().props;
     let tieneRol;
+
     if (auth.user) {
         tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
     }
+
     return (
         <GeneralLayout>
             <Head title={`Torneos de ${deporte.nombre}`} />
@@ -20,16 +22,27 @@ export default function Index({ torneos, deporte }) {
                     {torneos && torneos.length > 0 ? (
                         torneos.map((torneo) => (
                             <Link
-                                href={route("deporte.torneo.show", {torneo, deporte})}
+                                href={route("deporte.torneo.show", { torneo, deporte })}
                                 key={torneo.id}
-                                className="relative rounded-lg shadow-lg overflow-hidden group"
+                                className="relative rounded-lg shadow-lg overflow-hidden group bg-white transition-transform duration-200 transform hover:scale-105"
                             >
-                                
-                                {/* Nombre del torneo */}
-                                <div className="bg-green-400 p-4 text-center">
-                                    <h3 className="text-white text-xl font-semibold">
+                                {/* Información del torneo */}
+                                <div className="p-4">
+                                    <h3 className="text-xl font-semibold text-gray-800">
                                         {torneo.nombre}
                                     </h3>
+                                    <p className="text-gray-600">
+                                        Estado:{" "}
+                                        <span className="font-medium text-green-600">
+                                            {torneo.estado?.nombre}
+                                        </span>
+                                    </p>
+                                    <p className="text-gray-600">
+                                        Categoría:{" "}
+                                        <span className="font-medium text-blue-600">
+                                            {torneo.categoria?.nombre}
+                                        </span>
+                                    </p>
                                 </div>
                             </Link>
                         ))
@@ -40,16 +53,15 @@ export default function Index({ torneos, deporte }) {
                     )}
                 </div>
 
-                {auth.user && tieneRol(1) && ( /** cambiar a tieneRol 2 y logica para ver si el admin deportivo esta vinculado al deporte {deporte.nombre} */
+                {auth.user && tieneRol(1) && ( /** cambiar a rol 2 y logica de admin deporte vinculado a deporte */
                     <div>
-                    <Link
-                        href={route("deporte.torneo.create", { deporte: deporte.nombre })}
-                        className="underline font-bold text-xl"
-                    >
-                        Crear torneo de {deporte.nombre}
-                    </Link>
-                </div>
-                
+                        <Link
+                            href={route("deporte.torneo.create", { deporte: deporte.nombre })}
+                            className="underline font-bold text-xl"
+                        >
+                            Crear torneo de {deporte.nombre}
+                        </Link>
+                    </div>
                 )}
             </div>
         </GeneralLayout>
