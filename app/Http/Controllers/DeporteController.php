@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveDeporteRequest;
 use App\Models\Deporte;
-use App\Models\User;
-use App\Models\UserRol;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,7 +57,9 @@ class DeporteController extends BaseController
      */
     public function show(Deporte $deporte)
     {
-        return Inertia::Render('Deporte/Show', compact('deporte'));
+        $torneos = $deporte->torneos;
+
+    return Inertia::render('Deporte/Show', ['torneos' => $torneos, 'deporte' => $deporte]);
     }
 
     /**
