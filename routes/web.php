@@ -17,9 +17,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\WelcomeController;
 use App\Models\AdministradorDeportivo;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -56,13 +53,17 @@ Route::resource('periodista', PeriodistaController::class)->parameters([
     'periodista' => 'periodista'
 ]);
 Route::resource('rol', RolController::class);
-Route::group(['prefix' => 'deporte/{deporte:nombre}'], function() {
-    Route::resource('torneo', TorneoController::class);
-});
+
 Route::middleware('auth')->group(function(){
     Route::resource('user', UserController::class)->middleware(RoleMiddleware::class.':1');
-    //Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class.':1');
+    Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(RoleMiddleware::class.':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::resource('deporte.torneo', TorneoController::class)->parameters([
+        'deporte' => 'deporte:nombre'
+    ]);
 });
+Route::get('/deporte/{deporte}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
+
 
 require __DIR__.'/auth.php';

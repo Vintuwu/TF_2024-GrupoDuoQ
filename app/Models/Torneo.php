@@ -9,7 +9,15 @@ class Torneo extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['nombre', 'fechaInicio', 'fechaFin', 'ubicacion'];
+    protected $fillable = [
+        'nombre',
+        'fechaInicio',
+        'fechaFin',
+        'ubicacion',
+        'categoria_id',
+        'deporte_id',
+        'estado_id',
+    ];
     
     public function deporte()
     {

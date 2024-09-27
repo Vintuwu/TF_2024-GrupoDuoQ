@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('torneos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('deporte_id')->constrained('deportes')->onDelete('cascade');
-            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
-            $table->foreignId('estado_id')->constrained('estados')->onDelete('cascade');
             $table->string('nombre');
-            $table->date('fechaInicio');
-            $table->date('fechaFin');
+            $table->date('fechaInicio')->nullable();
+            $table->date('fechaFin')->nullable();
             $table->string('ubicacion');
+            $table->foreignId('categoria_id')->constrained()->onDelete('cascade');
+            $table->foreignId('deporte_id')->constrained()->onDelete('cascade');
+            $table->foreignId('estado_id')->constrained()->default(1); // Relación con estados, asignar por defecto a 'Preparación'
             $table->timestamps();
         });
     }

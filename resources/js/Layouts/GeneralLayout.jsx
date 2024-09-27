@@ -177,6 +177,14 @@ export default function GeneralLayout({ header, children }) {
                         >
                             Noticias
                         </ResponsiveNavLink>
+                        {auth.user && tieneRol(1) && (
+                                    <ResponsiveNavLink
+                                    href={route("user.index")}
+                                    active={route().current("user.index")}
+                                >
+                                    Usuarios
+                                </ResponsiveNavLink>
+                                )}
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
@@ -194,7 +202,7 @@ export default function GeneralLayout({ header, children }) {
                                     <ResponsiveNavLink
                                         href={route("profile.edit")}
                                     >
-                                        Profile
+                                        Perfil
                                     </ResponsiveNavLink>
                                     <ResponsiveNavLink
                                         method="post"
