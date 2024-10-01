@@ -20,10 +20,12 @@ class SaveEquipoRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            'nombre' => ['required', 'string'],
-            'torneo_id' => ['required', 'exists:torneos,id']
-        ];
-    }
+{
+    return [
+        'nombre' => ['required', 'string', 'max:255', 'unique:equipos,nombre'],
+        'habilitado' => ['nullable', 'boolean'],
+        'deporte_id' => ['required', 'exists:deportes,id'],
+    ];
+}
+
 }

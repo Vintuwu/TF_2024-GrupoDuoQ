@@ -42,7 +42,6 @@ Route::resource('comentario', ComentarioController::class);
 Route::resource('deporte', DeporteController::class)->parameters([
     'deporte' => 'deporte:nombre'
 ]);
-Route::resource('equipo', EquipoController::class);
 Route::resource('estado', EstadoController::class);
 Route::resource('jugador', JugadorController::class);
 Route::resource('noticia', NoticiaController::class)->parameters([
@@ -54,16 +53,25 @@ Route::resource('periodista', PeriodistaController::class)->parameters([
 ]);
 Route::resource('rol', RolController::class);
 
-Route::middleware('auth')->group(function(){
-    Route::resource('user', UserController::class)->middleware(RoleMiddleware::class.':1');
+Route::middleware('auth')->group(function () {
+    Route::resource('user', UserController::class)->middleware(RoleMiddleware::class . ':1');
     Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
-    Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class.':1');
-    Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(RoleMiddleware::class.':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class . ':1');
+    Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
     Route::resource('deporte.torneo', TorneoController::class)->parameters([
         'deporte' => 'deporte:nombre'
     ]);
+
+    Route::get('/deporte/{deporte}/equipo/create', [EquipoController::class, 'create'])->name('deporte.equipo.create')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::resource('deporte.equipo', EquipoController::class)->parameters([
+        'deporte' => 'deporte:nombre'
+    ]);
+    // Ruta para mostrar el formulario de edición de un equipo específico con el deporte
+    Route::get('/deporte/{deporte}/equipo/{equipo}/edit', [EquipoController::class, 'edit'])->name('deporte.equipo.edit')->middleware(RoleMiddleware::class . ':1');
+
+    // Ruta para actualizar un equipo con el deporte
+    Route::put('/deporte/{deporte}/equipo/{equipo}', [EquipoController::class, 'update'])->name('deporte.equipo.update')->middleware(RoleMiddleware::class . ':1');
 });
 Route::get('/deporte/{deporte:nombre}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

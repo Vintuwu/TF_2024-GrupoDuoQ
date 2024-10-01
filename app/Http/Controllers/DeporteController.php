@@ -59,10 +59,13 @@ class DeporteController extends BaseController
     {
         // Cargar torneos junto con estado y categoría
         $torneos = $deporte->torneos()->with(['estado', 'categoria'])->get();
+        
+        $equipos = $deporte->equipos()->get();
 
         return Inertia::render('Deporte/Show', [
             'torneos' => $torneos,
             'deporte' => $deporte,
+            'equipos' => $equipos,
         ]);
     }
 

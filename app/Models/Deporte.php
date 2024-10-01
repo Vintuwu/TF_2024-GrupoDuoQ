@@ -10,10 +10,19 @@ class Deporte extends Model
     use HasFactory;
     
     protected $fillable = ['nombre', 'nombreImagen'];
-    
+
+    public function getRouteKeyName()
+{
+    return 'nombre';
+}
     public function torneos()
     {
         return $this->hasMany(Torneo::class);
+    }
+
+    public function equipos()
+    {
+        return $this->hasMany(Equipo::class);
     }
 
     public function administradoresDeportivos()
