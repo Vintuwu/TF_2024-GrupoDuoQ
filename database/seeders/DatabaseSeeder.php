@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             DeporteSeeder::class,
             CategoriaSeeder::class,
             EstadoSeeder::class,
-            UserRolSeeder::class
+            UserRolSeeder::class,
+            EquiposSeeder::class,
         ]);
         // // User::factory(10)->create();
 
