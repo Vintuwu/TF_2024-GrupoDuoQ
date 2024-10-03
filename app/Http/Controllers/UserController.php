@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveUserRequest;
 use App\Models\AdministradorDeportivo;
+use App\Models\Arbitro;
 use App\Models\Deporte;
 use App\Models\Rol;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class UserController extends BaseController
@@ -16,8 +19,13 @@ class UserController extends BaseController
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::where('habilitado', true)->get();
         return Inertia::render('User/Index', compact('users'));
+    }
+
+    public function deshabilitados(){
+        $users = User::where('habilitado', false)->get();
+        return Inertia::render('User/Deshabilitados', compact('users'));
     }
 
     /**
@@ -52,22 +60,18 @@ class UserController extends BaseController
         $user->load('roles');
         $admRol = AdministradorDeportivo::where('user_id', $user->id)->first();
         $roles = Rol::get();
+        $arbitroDeporte = Arbitro::where('user_id', $user->id)->first();
         $deportes = Deporte::get();
         
-        return Inertia::render('User/Edit', compact('user', 'roles', 'deportes', 'admRol'));
+        return Inertia::render('User/Edit', compact('user', 'roles', 'deportes', 'admRol', 'arbitroDeporte'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(SaveUserRequest $request, User $user)
     {
-        $validatedData = $request->validate([
-            'roles' => 'required|array',   // Asegurarse de que roles es un array
-            'roles.*' => 'integer|exists:roles,id',  // Cada valor debe ser un ID de rol existente
-            'deporteAdm' => 'nullable|integer|exists:deportes,id'
-        ]);
-
+        $validatedData = $request->validated();
 
         // Sincronizar los roles del usuario
         $user->roles()->sync($validatedData['roles']);  // Actualizar los roles del usuario
@@ -79,6 +83,19 @@ class UserController extends BaseController
             );
         }
 
+        if ($validatedData['arbitroDeporte'] != ''){
+            Arbitro::updateOrCreate(
+                ['user_id' => $user->id],
+                ['deporte_id' => $validatedData['arbitroDeporte']]
+            );
+        }
+
+        if ($validatedData['newPassword'] != ''){
+            $user->update([
+                'password' => Hash::make($validatedData['newPassword'])
+            ]);
+        }
+
         // Redirigir de vuelta con un mensaje de éxito
         return redirect()->back()->with('success', 'Roles actualizados correctamente');
     }
@@ -86,9 +103,15 @@ class UserController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->update(['habilitado' => false]);
+        return to_route('user.index');
+    }
+
+    public function habilitar(User $user){
+        $user->update(['habilitado' => true]);
+        return to_route('user.index');
     }
 
     public function cambiarRol(Request $request, User $user){

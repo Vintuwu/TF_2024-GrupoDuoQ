@@ -2,12 +2,18 @@ import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React, { useState } from "react";
 import { Transition } from '@headlessui/react';
+import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
+import TextInput from "@/Components/TextInput";
 
 const Edit = (usuario) => {
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
-    const { data, setData, errors, post } = useForm({
+    const { data, setData, errors, post, reset} = useForm({
         roles: usuario.user.roles.map(rol => rol.id) || [],
-        deporteAdm: '',
+        deporteAdm: usuario.admRol?.deporte_id ?? '',
+        arbitroDeporte: usuario.arbitroDeporte?.deporte_id ?? '',
+        newPassword: '',
+        newPassword_confirmation: '',
     });
 
     const handleRolChange = (event) => {
@@ -22,7 +28,11 @@ const Edit = (usuario) => {
     };
 
     const changeDeporteAdm = (event) => {
-        setData('deporteAdm', parseInt(event.target.value))
+        setData('deporteAdm', parseInt(event.target.value));
+    }
+
+    const changeArbitro = (event) => {
+        setData('arbitroDeporte', parseInt(event.target.value));
     }
 
     const submit = (event) => {
@@ -31,7 +41,8 @@ const Edit = (usuario) => {
             onSuccess: () => {
                 setRecentlySuccessful(true);
                 setTimeout(() => setRecentlySuccessful(false), 3000);
-            }
+            },
+            onFinish: () => reset('newPassword', 'newPassword_confirmation')
         });
     };
 
@@ -72,15 +83,50 @@ const Edit = (usuario) => {
                             />
                             <label htmlFor={'rol' + rol.id} className="text-gray-700">{rol.nombre}</label>
                             {rol.id === 2 && data.roles.includes(2) && (
-                              <select className="ml-12 py-0 text-sm rounded-md" name="selectDeporte" id="selectDeporte" onChange={changeDeporteAdm}>
-                                <option value="" hidden>Seleccione un deporte</option>
-                                {usuario.deportes.map((deporte) =>
-                                    <option key={deporte.id} value={deporte.id} selected={usuario.admRol?.deporte_id == deporte.id}>{deporte.nombre}</option>
-                                )}
-                              </select>
+                                <>
+                                    <select className="ml-12 py-0 text-sm rounded-md" name="selectDeporte" id="selectDeporte" onChange={changeDeporteAdm} value={usuario.admRol?.deporte_id || data.deporteAdm}>
+                                      <option value="" hidden>Seleccione un deporte</option>
+                                      {usuario.deportes.map((deporte) =>
+                                          <option key={deporte.id} value={deporte.id}>{deporte.nombre}</option>
+                                      )}
+                                    </select>
+                                    <InputError message={errors.deporteAdm}/>
+                                </>
+                            )}
+                            {rol.id === 3 && data.roles.includes(3) && (
+                                <>
+                                    <select className="ml-12 py-0 text-sm rounded-md" name="selectDeporteArbitro" id="selectDeporteArbitro" onChange={changeArbitro} value={usuario.arbitroDeporte?.deporte_id || data.arbitroDeporte}>
+                                        <option value="" hidden>Seleccione un deporte</option>
+                                        {usuario.deportes.map(deporte => 
+                                            <option key={deporte.id} value={deporte.id}>{deporte.nombre}</option>
+                                        )}
+                                    </select>
+                                    <InputError message={errors.arbitroDeporte}/>
+                                </>
                             )}
                         </div>
                     ))}
+
+                    <h3 className="text-xl font-semibold text-gray-700 mb-4">Cambiar contraseña</h3>
+                    <InputLabel htmlFor={'newPassword'} value={'Nueva contraseña'}/>
+                    <TextInput 
+                        id={'newPassword'}
+                        name={'newPassword'}
+                        type={'password'}
+                        value={data.newPassword}
+                        onChange={(e) => setData('newPassword', e.target.value)}
+                    />
+                    <InputError message={errors.nuevaContraseña}/>
+
+                    <InputLabel htmlFor={'newPassword_confirmation'} value={'Confirmar contraseña'}/>
+                    <TextInput 
+                        id={'newPassword_confirmation'}
+                        name={'newPassword_confirmation'}
+                        type={'password'}
+                        value={data.newPassword_confirmation}
+                        onChange={(e) => setData('newPassword_confirmation', e.target.value)}
+                    />
+                    <InputError message={errors.nuevaContraseña}/>
 
                     <div className="flex justify-center">
                         <button

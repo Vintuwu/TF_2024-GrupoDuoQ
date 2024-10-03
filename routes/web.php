@@ -54,7 +54,9 @@ Route::resource('periodista', PeriodistaController::class)->parameters([
 Route::resource('rol', RolController::class);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/user/deshabilitados', [UserController::class, 'deshabilitados'])->name('user.deshabilitados')->middleware(RoleMiddleware::class . ':1');
     Route::resource('user', UserController::class)->middleware(RoleMiddleware::class . ':1');
+    Route::post('/user/habilitar/{user}', [UserController::class, 'habilitar'])->name('user.habilitar')->middleware(RoleMiddleware::class . ':1');
     Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class . ':1');
     Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte

@@ -3,14 +3,14 @@ import GeneralLayout from '@/Layouts/GeneralLayout'
 import { Head, Link } from '@inertiajs/react'
 import React from 'react'
 
-const Index = (users) => {
+const Deshabilitados = (users) => {
   const usuarios = users.users.filter(user => user.id != users.auth.user.id);
   return (
     <GeneralLayout>
             <Head title="Cambiar Roles" />
             <div className="container mx-auto py-10">
                 <h2 className="text-3xl font-bold text-gray-800 mb-8">
-                    Cambiar Roles
+                    Usuarios deshabilitados
                 </h2>
                 <div className="mb-8">
                     {users.users.length>0 ?
@@ -53,12 +53,12 @@ const Index = (users) => {
                                                 Editar
                                             </Link>
                                             <Link
-                                              className='py-2 px-3 bg-red-500 shadow-md rounded-md font-bold text-white ring-1 ring-red-600 hover:bg-red-600 hover:ring-red-700 transition-all duration-200'
-                                              href={route('user.destroy', usuario)}
+                                              className='py-2 px-3 bg-emerald-500 shadow-md rounded-md font-bold text-white ring-1 ring-emerald-600 hover:bg-emerald-600 hover:ring-emerald-700 transition-all duration-200'
+                                              href={route('user.habilitar', usuario)}
+                                              method='post'
                                               as='button'
-                                              method='delete'
                                             >
-                                              Eliminar
+                                              Habilitar
                                             </Link>
                                         </td>
                                     </tr>
@@ -67,19 +67,28 @@ const Index = (users) => {
                         </table>
                         <div className="flex justify-end mt-12">
                           <PrimaryButton>
-                            <Link href={route('user.deshabilitados')}>
-                              Usuarios Deshabilitados
+                            <Link href={route('user.index')}>
+                                Usuarios Habilitados
                             </Link>
                           </PrimaryButton>
                         </div>
                       </>
                       :
-                        <p>No hay usuarios</p>
+                      <>
+                        <div className="flex items-center flex-col mt-6">
+                          <p className='text-xl'>No hay usuarios deshabilitados</p>
+                          <PrimaryButton className='mt-6'>
+                              <Link href={route('user.index')}>
+                                  Volver
+                              </Link>
+                          </PrimaryButton>
+                        </div>
+                      </>
                     }
                 </div>
             </div>
     </GeneralLayout>
-)}
+  )
+}
 
-
-export default Index
+export default Deshabilitados
