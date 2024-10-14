@@ -14,6 +14,7 @@ class Torneo extends Model
         'fechaInicio',
         'fechaFin',
         'ubicacion',
+        'formato',
         'categoria_id',
         'deporte_id',
         'estado_id',

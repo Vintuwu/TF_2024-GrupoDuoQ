@@ -69,20 +69,18 @@ class EquipoController extends BaseController
      * Show the form for editing the specified resource.
      */
     public function edit(Deporte $deporte, Equipo $equipo)
-{
-    $equipo->load('categorias');
-    // Obtener todas las categorías para la vista
-    $categorias = Categoria::all();
+    {
+        $equipo->load('categorias');
+        // Obtener todas las categorías para la vista
+        $categorias = Categoria::all();
 
-    // Pasar datos a la vista Inertia
-    return Inertia::render('Equipo/Edit', [
-        'equipo' => $equipo,
-        'categorias' => $categorias,
-        'deporte' => $deporte,
-    ]);
-}
-
-
+        // Pasar datos a la vista Inertia
+        return Inertia::render('Equipo/Edit', [
+            'equipo' => $equipo,
+            'categorias' => $categorias,
+            'deporte' => $deporte,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -100,20 +98,20 @@ class EquipoController extends BaseController
             'categorias' => ['array'],
             'categorias.*' => ['integer', 'exists:categorias,id'], // Validar que cada categoría exista
         ]);
-    
+
         // Actualizar los datos del equipo
         $equipo->update([
             'nombre' => $validatedData['nombre'],
             'habilitado' => $validatedData['habilitado'],
         ]);
-    
+
         // Sincronizar categorías (actualizar relaciones)
         if (isset($validatedData['categorias'])) {
             $equipo->categorias()->sync($validatedData['categorias']);
         }
-    
+
         return redirect()->route('deporte.equipo.edit', [$deporte->nombre, $equipo->id])
-                     ->with('success', 'Equipo actualizado correctamente.');
+            ->with('success', 'Equipo actualizado correctamente.');
     }
 
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('fechaInicio')->nullable();
             $table->date('fechaFin')->nullable();
             $table->string('ubicacion');
+            $table->string('formato')->nullable();
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
             $table->foreignId('deporte_id')->constrained('deportes')->onDelete('cascade');
             $table->foreignId('estado_id')->constrained('estados')->default(1); // Relación con estados, por defecto 'Preparación'

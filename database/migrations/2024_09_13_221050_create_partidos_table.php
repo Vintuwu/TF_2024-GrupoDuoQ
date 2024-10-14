@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('partidos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('torneo_id')->constrained('torneos')->onDelete('cascade');
-            $table->foreignId('equipo_uno_id')->constrained('equipos')->onDelete('cascade');
-            $table->foreignId('equipo_dos_id')->constrained('equipos')->onDelete('cascade');
+            $table->foreignId('equipo_uno_id')->nullable()->constrained('equipos')->onDelete('cascade');
+            $table->foreignId('equipo_dos_id')->nullable()->constrained('equipos')->onDelete('cascade');
             $table->foreignId('estado_id')->constrained('estados')->onDelete('cascade');
             $table->date('fecha');
             $table->time('hora');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('puntaje_equipo_uno')->nullable();
             $table->integer('puntaje_equipo_dos')->nullable();
             $table->timestamps();
-        });
+        });        
     }
 
     /**

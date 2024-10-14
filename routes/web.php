@@ -69,10 +69,12 @@ Route::middleware('auth')->group(function () {
         'deporte' => 'deporte:nombre'
     ]);
     // Ruta para mostrar el formulario de edición de un equipo específico con el deporte
-    Route::get('/deporte/{deporte}/equipo/{equipo}/edit', [EquipoController::class, 'edit'])->name('deporte.equipo.edit')->middleware(RoleMiddleware::class . ':1');
+    Route::get('/deporte/{deporte}/equipo/{equipo}/edit', [EquipoController::class, 'edit'])->name('deporte.equipo.edit')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
 
     // Ruta para actualizar un equipo con el deporte
-    Route::put('/deporte/{deporte}/equipo/{equipo}', [EquipoController::class, 'update'])->name('deporte.equipo.update')->middleware(RoleMiddleware::class . ':1');
+    Route::put('/deporte/{deporte}/equipo/{equipo}', [EquipoController::class, 'update'])->name('deporte.equipo.update')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+
+    Route::post('/torneo/{torneo}/configurar-fixture', [TorneoController::class, 'configurarFixture'])->name('torneo.configurar_fixture');
 });
 Route::get('/deporte/{deporte:nombre}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
 
