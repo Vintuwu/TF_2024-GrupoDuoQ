@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             EstadoSeeder::class,
             UserRolSeeder::class,
             EquiposSeeder::class,
+            TorneoSeeder::class,
         ]);
         // // User::factory(10)->create();
 

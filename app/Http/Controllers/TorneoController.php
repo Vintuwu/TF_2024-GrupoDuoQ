@@ -102,16 +102,12 @@ class TorneoController extends BaseController
             'equiposSeleccionados' => 'required|array|min:2',
         ]);
 
-        // Función para verificar si un número es potencia de 2
-        function isPowerOfTwo($num)
-        {
-            return $num && (($num & ($num - 1)) === 0);
-        }
+
 
         // Validar que el número de equipos seleccionados sea una potencia de 2 si el formato es eliminación directa
         if ($request->formatoTorneo === 'elimination') {
             $numEquipos = count($request->equiposSeleccionados);
-            if ($numEquipos < 2 || !isPowerOfTwo($numEquipos)) {
+            if ($numEquipos < 2 || !$this->isPowerOfTwo($numEquipos)) {
                 return back()->withErrors(['equiposSeleccionados' => 'El número de equipos seleccionados debe ser una potencia de 2 (2, 4, 8, 16, etc.) para la eliminación directa.']);
             }
         }
@@ -132,6 +128,12 @@ class TorneoController extends BaseController
 
         return redirect()->route('deporte.torneo.show', [$torneo->deporte->nombre, $torneo->id])
             ->with('success', 'Torneo creado exitosamente.');
+    }
+
+    // Función para verificar si un número es potencia de 2
+    function isPowerOfTwo($num)
+    {
+        return $num && (($num & ($num - 1)) === 0);
     }
 
     private function generateRoundRobinMatches($torneo, $data)
