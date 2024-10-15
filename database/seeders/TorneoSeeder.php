@@ -18,7 +18,7 @@ class TorneoSeeder extends Seeder
 
         // Crear el primer torneo (Fútbol)
         $torneoFutbol = Torneo::create([
-            'nombre' => 'Torneo de Fútbol U17',
+            'nombre' => 'Torneo de Fútbol',
             'fechaInicio' => Carbon::create(2024, 10, 20), // Fecha de inicio
             'fechaFin' => null,
             'ubicacion' => 'Calle Fútbol 123',
@@ -49,7 +49,7 @@ class TorneoSeeder extends Seeder
 
         // Crear el segundo torneo (Básquet)
         $torneoBasquet = Torneo::create([
-            'nombre' => 'Torneo de Básquet U15',
+            'nombre' => 'Torneo de Básquet',
             'fechaInicio' => Carbon::create(2024, 11, 5), // Fecha de inicio
             'fechaFin' => null,
             'ubicacion' => 'Calle Básquet 456',
@@ -80,7 +80,7 @@ class TorneoSeeder extends Seeder
 
         // Crear el tercer torneo (Vóley)
         Torneo::create([
-            'nombre' => 'Torneo de Vóley Mixto Juvenil',
+            'nombre' => 'Torneo de Vóley',
             'fechaInicio' => Carbon::create(2024, 12, 10), // Fecha de inicio
             'fechaFin' => null,
             'ubicacion' => 'Calle Vóley 789',

@@ -73,11 +73,30 @@ class TorneoController extends BaseController
     public function show(Deporte $deporte, Torneo $torneo)
     {
         $equiposElegibles = [];
+        $equipos = [];
+        $partidos = [];
+        $clasificacion = [];
+
         if ($torneo->estado->nombre === 'Preparación') {
             // Obtener los equipos habilitados que coincidan con la categoría y el deporte del torneo
             $equiposElegibles = Equipo::whereHas('categorias', function ($query) use ($torneo) {
                 $query->where('categoria_id', $torneo->categoria_id);
-            })->where('deporte_id', $torneo->deporte_id)->get()->where('habilitado', true);
+            })->where('deporte_id', $torneo->deporte_id)->where('habilitado', true)->get();
+        } else {
+            $equipos = $torneo->equipos;
+            // Obtener los partidos del torneo
+            $partidos = Partido::where('torneo_id', $torneo->id)->get();
+
+            $clasificacion = $this->calcularClasificacion($equipos, $partidos);
+            $partidos = Partido::with(['equipoUno', 'equipoDos'])
+                ->where('torneo_id', $torneo->id)
+                ->orderBy('ronda')
+                ->orderBy('fecha')
+                ->orderBy('hora')
+                ->get();
+
+            // Agrupar los partidos por ronda
+            $partidosPorRonda = $partidos->groupBy('ronda');
         }
 
         return Inertia::render('Torneo/Show', [
@@ -86,8 +105,60 @@ class TorneoController extends BaseController
             'estado' => $torneo->estado,
             'categoria' => $torneo->categoria,
             'equiposElegibles' => $equiposElegibles,
+            'equipos' => $equipos,
+            'partidos' => $partidos,
+            'clasificacion' => $clasificacion,
+            'partidosPorRonda' => $partidosPorRonda,
         ]);
     }
+
+    private function calcularClasificacion($equipos, $partidos)
+    {
+        $clasificacion = [];
+
+        // Inicializar los datos de clasificación
+        foreach ($equipos as $equipo) {
+            $clasificacion[$equipo->id] = [
+                'nombre' => $equipo->nombre,
+                'partidos_jugados' => 0,
+                'partidos_ganados' => 0,
+                'partidos_empatados' => 0,
+                'partidos_perdidos' => 0,
+                'puntos' => 0,
+            ];
+        }
+
+        // Lógica para calcular puntos basado en los partidos
+        foreach ($partidos as $partido) {
+            // Comprobar que los equipos existen en la clasificación
+            if (isset($clasificacion[$partido->equipo1_id]) && isset($clasificacion[$partido->equipo2_id])) {
+                // Incrementar el contador de partidos jugados
+                $clasificacion[$partido->equipo1_id]['partidos_jugados']++;
+                $clasificacion[$partido->equipo2_id]['partidos_jugados']++;
+
+                // Comprobar los resultados del partido y actualizar las estadísticas
+                if ($partido->puntos_equipo_uno > $partido->puntos_equipo_dos) {
+                    $clasificacion[$partido->equipo1_id]['partidos_ganados']++;
+                    $clasificacion[$partido->equipo2_id]['partidos_perdidos']++;
+                    $clasificacion[$partido->equipo1_id]['puntos'] += 3; // Victoria
+                } elseif ($partido->puntos_equipo_uno < $partido->puntos_equipo_dos) {
+                    $clasificacion[$partido->equipo2_id]['partidos_ganados']++;
+                    $clasificacion[$partido->equipo1_id]['partidos_perdidos']++;
+                    $clasificacion[$partido->equipo2_id]['puntos'] += 3; // Victoria
+                } else {
+                    // Empate
+                    $clasificacion[$partido->equipo1_id]['partidos_empatados']++;
+                    $clasificacion[$partido->equipo2_id]['partidos_empatados']++;
+                    $clasificacion[$partido->equipo1_id]['puntos'] += 1; // Empate
+                    $clasificacion[$partido->equipo2_id]['puntos'] += 1; // Empate
+                }
+            }
+        }
+
+        return $clasificacion;
+    }
+
+
 
     public function configurarFixture(Request $request, Torneo $torneo)
     {
@@ -359,6 +430,15 @@ class TorneoController extends BaseController
         return true;
     }
 
+    public function clasificacion($id)
+    {
+        $torneo = Torneo::with(['equipos.partidas'])->findOrFail($id);
+
+        // Devuelve los equipos y sus partidas
+        return response()->json([
+            'clasificacion' => $torneo->equipos,
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      */

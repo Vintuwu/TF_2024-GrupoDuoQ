@@ -76,6 +76,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/torneo/{torneo}/configurar-fixture', [TorneoController::class, 'configurarFixture'])->name('torneo.configurar_fixture');
 });
+// Ruta para obtener la clasificación de un torneo específico
+Route::get('/torneos/{id}/clasificacion', [TorneoController::class, 'clasificacion'])
+    ->name('torneos.clasificacion');
+
 Route::get('/deporte/{deporte:nombre}/torneo/{torneo}', [TorneoController::class, 'show'])->name('deporte.torneo.show');
 
 require __DIR__ . '/auth.php';
