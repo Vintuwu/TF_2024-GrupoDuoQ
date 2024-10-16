@@ -1,7 +1,6 @@
 import React from "react";
 
 const Fixture = ({ partidosPorRonda, formatoTorneo }) => {
-    console.log(formatoTorneo);
     const getNombreRonda = (ronda, totalRondas, ) => {
         if (formatoTorneo == 'elimination') {
             const diferencia = totalRondas - ronda + 1;

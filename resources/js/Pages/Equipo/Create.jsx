@@ -13,7 +13,6 @@ export default function Create({ deporte }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Datos del formulario a enviar:", data);
         post(route("deporte.equipo.store", deporte.nombre));
     };
 

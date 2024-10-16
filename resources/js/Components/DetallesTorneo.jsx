@@ -22,7 +22,7 @@ const DetallesTorneo = ({
 
     const renderSection = () => {
         // Si el torneo está en preparación y el usuario es administrador del deporte
-        if (estado.nombre === "Preparación" && tieneRol(1)) {
+        if (estado.nombre === "Preparación" && auth.user && tieneRol(1)) {
             return (
                 <div className="max-w-3xl mx-auto bg-white shadow-md rounded px-8 py-6 mt-4">
                     <FixtureForm
