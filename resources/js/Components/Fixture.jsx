@@ -1,14 +1,19 @@
 import React from "react";
 
-const Fixture = ({ partidosPorRonda }) => {
-    const getNombreRonda = (ronda, totalRondas) => {
-        const diferencia = totalRondas - ronda + 1;
+const Fixture = ({ partidosPorRonda, formatoTorneo }) => {
+    console.log(formatoTorneo);
+    const getNombreRonda = (ronda, totalRondas, ) => {
+        if (formatoTorneo == 'elimination') {
+            const diferencia = totalRondas - ronda + 1;
     
-        if (diferencia === 1) return "Final";
-        if (diferencia === 2) return "Semifinal";
-        if (diferencia === 3) return "Cuartos de final";
-        if (diferencia === 4) return "Octavos de final";
-        return `Ronda ${ronda}`;
+            if (diferencia === 1) return "Final";
+            if (diferencia === 2) return "Semifinal";
+            if (diferencia === 3) return "Cuartos de final";
+            if (diferencia === 4) return "Octavos de final";
+            if (diferencia === 5) return "Dieciseisavos de final";
+            return `Ronda ${ronda}`;
+        }
+        return `Ronda ${ronda}`; // Si no es eliminación directa, muestra "Ronda 1", "Ronda 2", etc.
     };
     
     // Calcula el total de rondas (es la cantidad de claves en el objeto)

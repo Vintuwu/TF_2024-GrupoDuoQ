@@ -65,7 +65,7 @@ const DetallesTorneo = ({
             case "fixture":
                 return (
                     <div className="max-w-7xl mx-auto bg-white shadow-md rounded px-8 py-6 mt-4">
-                        <Fixture partidosPorRonda={partidosPorRonda} />
+                        <Fixture partidosPorRonda={partidosPorRonda} formatoTorneo={torneo.formato} />
                     </div>
                 );
         }

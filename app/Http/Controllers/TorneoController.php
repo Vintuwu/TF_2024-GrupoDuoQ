@@ -76,6 +76,7 @@ class TorneoController extends BaseController
         $equipos = [];
         $partidos = [];
         $clasificacion = [];
+        $partidosPorRonda = [];
 
         if ($torneo->estado->nombre === 'Preparación') {
             // Obtener los equipos habilitados que coincidan con la categoría y el deporte del torneo
