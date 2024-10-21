@@ -10,9 +10,10 @@ class Jugador extends Model
     use HasFactory;
     
     protected $fillable = ['nombre', 'apellido', 'fechaNac', 'genero'];
+    protected $table = 'jugadores';
     
     public function equipos()
     {
-        return $this->belongsToMany(Equipo::class, 'jugadores_equipo');
+        return $this->belongsToMany(Equipo::class, 'jugadores_equipo', 'jugador_dni', 'equipo_id');
     }
 }

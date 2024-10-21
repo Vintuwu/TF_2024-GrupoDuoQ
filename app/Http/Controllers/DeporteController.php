@@ -62,10 +62,13 @@ class DeporteController extends BaseController
         
         $equipos = $deporte->equipos()->get();
 
+        $administradores = $deporte->administradoresDeportivos()->get();
+
         return Inertia::render('Deporte/Show', [
             'torneos' => $torneos,
             'deporte' => $deporte,
             'equipos' => $equipos,
+            'administradores' => $administradores
         ]);
     }
 

@@ -2,12 +2,14 @@ import React from "react";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 
-export default function Index({ torneos, deporte, equipos }) {
+export default function Index({ torneos, deporte, equipos, administradores }) {
     const { userRoles, auth } = usePage().props;
     let tieneRol;
+    let adminDeporte;
 
     if (auth.user) {
         tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
+        adminDeporte = (userId) => administradores.some(administrador => administrador.user_id == userId)
     }
 
     return (
@@ -56,10 +58,8 @@ export default function Index({ torneos, deporte, equipos }) {
                     )}
                 </div>
 
-                {auth.user &&
-                    tieneRol(
-                        1
-                    ) /** cambiar a rol 2 y logica de admin deporte vinculado a deporte */ && (
+                {auth.user && tieneRol(2) && adminDeporte(deporte.id) 
+                    && (
                         <div>
                             <Link
                                 href={route("deporte.torneo.create", {

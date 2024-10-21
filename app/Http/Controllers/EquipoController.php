@@ -70,7 +70,7 @@ class EquipoController extends BaseController
      */
     public function edit(Deporte $deporte, Equipo $equipo)
     {
-        $equipo->load('categorias');
+        $equipo->load(['categorias', 'jugadores']);
         // Obtener todas las categorías para la vista
         $categorias = Categoria::all();
 

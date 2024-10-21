@@ -27,7 +27,7 @@ class Equipo extends Model
     
     public function jugadores()
     {
-        return $this->belongsToMany(Jugador::class, 'jugadores_equipo');
+        return $this->belongsToMany(Jugador::class, 'jugadores_equipo', 'equipo_id', 'jugador_dni', 'id', 'dni');
     }
 
     public function torneos()

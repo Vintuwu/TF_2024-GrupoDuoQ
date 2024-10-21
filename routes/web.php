@@ -16,6 +16,7 @@ use App\Http\Controllers\TorneoController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Middleware\DeporteAdmMiddleware;
 use App\Models\AdministradorDeportivo;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,7 +44,7 @@ Route::resource('deporte', DeporteController::class)->parameters([
     'deporte' => 'deporte:nombre'
 ]);
 Route::resource('estado', EstadoController::class);
-Route::resource('jugador', JugadorController::class);
+
 Route::resource('noticia', NoticiaController::class)->parameters([
     'noticia' => 'noticia'
 ]);
@@ -59,22 +60,31 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/habilitar/{user}', [UserController::class, 'habilitar'])->name('user.habilitar')->middleware(RoleMiddleware::class . ':1');
     Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::get('/deporte/create', [DeporteController::class, 'create'])->name('deporte.create')->middleware(RoleMiddleware::class . ':1');
-    Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
     Route::resource('deporte.torneo', TorneoController::class)->parameters([
         'deporte' => 'deporte:nombre'
     ]);
+    Route::get('/deporte/{deporte}/torneo/create', [TorneoController::class, 'create'])->name('deporte.torneo.create')->middleware(DeporteAdmMiddleware::class . ':2'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
 
-    Route::get('/deporte/{deporte}/equipo/create', [EquipoController::class, 'create'])->name('deporte.equipo.create')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::get('/deporte/{deporte}/equipo/create', [EquipoController::class, 'create'])->name('deporte.equipo.create')->middleware(DeporteAdmMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
     Route::resource('deporte.equipo', EquipoController::class)->parameters([
         'deporte' => 'deporte:nombre'
     ]);
     // Ruta para mostrar el formulario de edición de un equipo específico con el deporte
-    Route::get('/deporte/{deporte}/equipo/{equipo}/edit', [EquipoController::class, 'edit'])->name('deporte.equipo.edit')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::get('/deporte/{deporte}/equipo/{equipo}/edit', [EquipoController::class, 'edit'])->name('deporte.equipo.edit')->middleware(RoleMiddleware::class . ':2'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::get('/deporte/{deporte}/equipo/{equipo}/jugadores/create', [JugadorController::class, 'create'])->name('deporte.equipo.jugador.create');
+    Route::resource('deporte.equipo.jugador', JugadorController::class)->parameters([
+        'deporte' => 'deporte:nombre',
+        'equipo' => 'equipo:id'
+    ]);
 
     // Ruta para actualizar un equipo con el deporte
-    Route::put('/deporte/{deporte}/equipo/{equipo}', [EquipoController::class, 'update'])->name('deporte.equipo.update')->middleware(RoleMiddleware::class . ':1'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
+    Route::put('/deporte/{deporte}/equipo/{equipo}', [EquipoController::class, 'update'])->name('deporte.equipo.update')->middleware(RoleMiddleware::class . ':2'); // esto deberia ser id 2 + verificacion de que este vinculado al deporte
 
     Route::post('/torneo/{torneo}/configurar-fixture', [TorneoController::class, 'configurarFixture'])->name('torneo.configurar_fixture');
+
+    Route::get('/jugador/getJugadores', [JugadorController::class, 'getJugadores'])->name('jugador.getJugadores');
+    Route::post('/jugador/jugadorAsync', [JugadorController::class, 'jugadorAsync'])->name('jugador.jugadorAsync');
+    Route::post('/jugador/agregarJugadorAEquipo', [JugadorController::class, 'agregarJugadorAEquipo'])->name('jugador.agregarJugadorAEquipo');
 });
 // Ruta para obtener la clasificación de un torneo específico
 Route::get('/torneos/{id}/clasificacion', [TorneoController::class, 'clasificacion'])

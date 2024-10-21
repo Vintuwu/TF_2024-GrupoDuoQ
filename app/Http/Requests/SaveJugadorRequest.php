@@ -22,7 +22,7 @@ class SaveJugadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dni' => ['required', 'numeric', 'max_digits:8'],
+            'dni' => ['required', 'unique:jugadores,dni', 'numeric', 'max_digits:8'],
             'nombre' => ['required', 'string'],
             'apellido' => ['required', 'string'],
             'fechaNac' => ['required', 'date'],
