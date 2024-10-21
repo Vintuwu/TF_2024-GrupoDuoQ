@@ -6,6 +6,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 
 export default function UpdateProfileInformation({
+    mustVerifyEmail,
     status,
     className = "",
 }) {
@@ -83,7 +84,7 @@ export default function UpdateProfileInformation({
 
             <InputError className="mt-2" message={errors.email} />
         </div>
-        {user.email_verified_at === null && (
+        {mustVerifyEmail && (
             <div>
                 <p className="text-sm mt-2 text-gray-800">
                     Tu dirección de correo electrónico no está verificada.

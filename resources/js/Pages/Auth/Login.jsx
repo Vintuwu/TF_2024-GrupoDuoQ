@@ -2,7 +2,7 @@ import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
+import SuccessButton from "@/Components/SuccessButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 
@@ -91,11 +91,10 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <SuccessButton className="ms-3" disabled={processing}>
                         Iniciar sesión
-                    </PrimaryButton>
+                    </SuccessButton>
                 </div>
-                
             </form>
         </GuestLayout>
     );
