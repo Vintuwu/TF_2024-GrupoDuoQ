@@ -26,8 +26,8 @@ class DeporteAdmMiddleware
         $deporte = Deporte::findOrFail($deporteId);
 
         
-        if (!$user->roles()->where('rol_id', $rol)->exists() &&
-            !$deporte->administradoresDeportivos()->where('user_id', $user->id)){
+        if (!$user->roles()->where('rol_id', $rol)->exists() ||
+            !$deporte->administradoresDeportivos()->where('user_id', $user->id)->exists()){
             return redirect('/');
         }
         return $next($request);
