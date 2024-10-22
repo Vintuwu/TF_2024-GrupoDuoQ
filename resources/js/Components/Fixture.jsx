@@ -17,7 +17,6 @@ const Fixture = ({ partidosPorRonda, formatoTorneo }) => {
     
     // Calcula el total de rondas (es la cantidad de claves en el objeto)
     const totalRondas = Object.keys(partidosPorRonda).length;
-
     return (
         <table className="w-full">
             <tbody className="w-full">
@@ -55,6 +54,7 @@ const Fixture = ({ partidosPorRonda, formatoTorneo }) => {
                                         day: "numeric",
                                         month: "long",
                                         year: "numeric",
+                                        timeZone: "UTC"
                                     })}{" "}
                                     a las {partido.hora.slice(0, 5)}
                                 </td>
