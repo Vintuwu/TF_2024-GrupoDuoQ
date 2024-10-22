@@ -11,7 +11,7 @@ export default function Index({ torneos, deporte, equipos, administradores }) {
         tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
         adminDeporte = (userId) => administradores.some(administrador => administrador.user_id == userId)
     }
-
+    
     return (
         <GeneralLayout>
             <Head title={`Torneos de ${deporte.nombre}`} />
@@ -58,7 +58,7 @@ export default function Index({ torneos, deporte, equipos, administradores }) {
                     )}
                 </div>
 
-                {auth.user && tieneRol(2) && adminDeporte(deporte.id) 
+                {auth.user && tieneRol(2) && adminDeporte(auth.user.id) 
                     && (
                         <div>
                             <Link

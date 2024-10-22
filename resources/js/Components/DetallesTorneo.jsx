@@ -11,24 +11,31 @@ const DetallesTorneo = ({
     estado,
     clasificacion,
     partidosPorRonda,
-    equipos
+    equipos,
+    administradores,
+    categoria
 }) => {
     const { userRoles, auth } = usePage().props;
     let tieneRol;
+    let adminDeporte;
+
     if (auth.user) {
         tieneRol = (rolId) => userRoles.some((role) => role.rol_id === rolId);
+        adminDeporte = (userId) => administradores.some(administrador => administrador.user_id == userId)
     }
+
     const [activeSection, setActiveSection] = useState("clasificacion"); // Sección activa predeterminada
 
     const renderSection = () => {
         // Si el torneo está en preparación y el usuario es administrador del deporte
-        if (estado.nombre === "Preparación" && auth.user && tieneRol(1)) {
+        if (estado.nombre === "Preparación" && auth.user && tieneRol(2) && adminDeporte(auth.user.id)) {
             return (
                 <div className="max-w-3xl mx-auto bg-white shadow-md rounded px-8 py-6 mt-4">
                     <FixtureForm
                         torneo={torneo}
                         equiposElegibles={equiposElegibles}
                         estado={estado}
+                        categoria={categoria}
                     />
                 </div>
             );

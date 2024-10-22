@@ -11,7 +11,8 @@ export default function Show({
     equiposElegibles,
     clasificacion,
     partidosPorRonda,
-    equipos
+    equipos,
+    administradores
 }) {
     return (
         <GeneralLayout>
@@ -57,6 +58,8 @@ export default function Show({
                 clasificacion={clasificacion}
                 partidosPorRonda={partidosPorRonda}
                 equipos={equipos}
+                administradores={administradores}
+                categoria={categoria}
             />
         </GeneralLayout>
     );

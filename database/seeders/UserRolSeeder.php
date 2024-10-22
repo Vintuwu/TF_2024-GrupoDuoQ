@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Deporte;
+use App\Models\AdministradorDeportivo;
 
 class UserRolSeeder extends Seeder
 {
@@ -15,18 +17,12 @@ class UserRolSeeder extends Seeder
      */
     public function run()
     {
-        // Crear los usuarios
+        // Crear los usuarios generales
         $users = [
             [
                 'nombre' => 'Usuario',
                 'apellido' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
-            ],
-            [
-                'nombre' => 'Administrador',
-                'apellido' => 'Deportivo',
-                'email' => 'deportivo@example.com',
                 'password' => Hash::make('password'),
             ],
             [
@@ -57,9 +53,6 @@ class UserRolSeeder extends Seeder
                 case 'admin@example.com':
                     $user->roles()->attach([1]); // Administrador
                     break;
-                case 'deportivo@example.com':
-                    $user->roles()->attach([2]); // Administrador Deportivo
-                    break;
                 case 'arbitro@example.com':
                     $user->roles()->attach([3]); // Árbitro
                     break;
@@ -70,6 +63,27 @@ class UserRolSeeder extends Seeder
                     $user->roles()->attach([5]); // Usuario
                     break;
             }
+        }
+
+        // Crear un Administrador Deportivo para cada deporte existente
+        $deportes = Deporte::all(); // Obtener todos los deportes de la tabla deportes
+        
+        foreach ($deportes as $deporte) {
+            $userDeportivo = User::create([
+                'nombre' => 'Administrador',
+                'apellido' => ($deporte->nombre),
+                'email' => 'admin_' . strtolower($deporte->nombre) . '@example.com',
+                'password' => Hash::make('password'),
+            ]);
+
+            // Asignar el rol de Administrador Deportivo (rol_id = 2, por ejemplo)
+            $userDeportivo->roles()->attach([2]);
+
+            // Relacionar al administrador con su deporte en la tabla administrador_deportivos
+            AdministradorDeportivo::create([
+                'user_id' => $userDeportivo->id,
+                'deporte_id' => $deporte->id,
+            ]);
         }
     }
 }

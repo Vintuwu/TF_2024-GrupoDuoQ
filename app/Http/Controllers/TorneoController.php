@@ -100,6 +100,8 @@ class TorneoController extends BaseController
             $partidosPorRonda = $partidos->groupBy('ronda');
         }
 
+        $administradores = $deporte->administradoresDeportivos()->get();
+
         return Inertia::render('Torneo/Show', [
             'torneo' => $torneo,
             'deporte' => $deporte,
@@ -110,6 +112,7 @@ class TorneoController extends BaseController
             'partidos' => $partidos,
             'clasificacion' => $clasificacion,
             'partidosPorRonda' => $partidosPorRonda,
+            'administradores' => $administradores,
         ]);
     }
 

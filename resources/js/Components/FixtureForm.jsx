@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "@inertiajs/react";
 import SuccessButton from "./SuccessButton";
 
-const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
+const FixtureForm = ({ torneo, equiposElegibles, estado, categoria }) => {
     const { data, setData, errors, post } = useForm({
         dias: ["Viernes", "Sábado"],
         rangosHorarios: {
@@ -126,7 +126,6 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                             </p>
                         )}
                     </div>
-
                     {/* Rango horario por día */}
                     {data.dias.map((dia, index) => (
                         <div key={index} className="mb-4">
@@ -162,7 +161,6 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                             {errors.rangosHorarios}
                         </p>
                     )}
-
                     {/* Número de canchas */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -181,7 +179,6 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                             </p>
                         )}
                     </div>
-
                     {/* Duración del partido */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -202,7 +199,6 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                             </p>
                         )}
                     </div>
-
                     {/* Formato del Torneo */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -232,10 +228,11 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                                 <p className="text-gray-600 text-sm">
                                     <strong>Round Robin:</strong> Todos los
                                     equipos juegan entre sí al menos una vez. El
-                                    equipo con el mejor puntaje al final de la liga es el ganador. Este
-                                    formato asegura que cada equipo tenga
-                                    múltiples oportunidades para competir y no
-                                    sea eliminado inmediatamente.
+                                    equipo con el mejor puntaje al final de la
+                                    liga es el ganador. Este formato asegura que
+                                    cada equipo tenga múltiples oportunidades
+                                    para competir y no sea eliminado
+                                    inmediatamente.
                                 </p>
                             )}
                             {data.formatoTorneo === "elimination" && (
@@ -251,37 +248,46 @@ const FixtureForm = ({ torneo, equiposElegibles, estado }) => {
                             )}
                         </div>
                     </div>
-
                     {/* Equipos Elegibles */}
                     <h3 className="text-xl font-semibold text-gray-700 mb-4">
                         Equipos Elegibles
                     </h3>
-                    {equiposElegibles.map((equipo) => (
-                        <div key={equipo.id} className="flex items-center mb-2">
-                            <input
-                                type="checkbox"
-                                id={"team" + equipo.id}
-                                value={equipo.id}
-                                onChange={handleTeamChange}
-                                className="mr-2 rounded border-gray-300 focus:ring-blue-500"
-                            />
-                            <label
-                                htmlFor={"team" + equipo.id}
-                                className="text-gray-700"
+                    {equiposElegibles.length === 0 ? (
+                        <p className="text-red-500 mb-4 font-bold">
+                            No hay equipos que sean elegibles para la categoria {categoria.nombre}
+                        </p>
+                    ) : (
+                        equiposElegibles.map((equipo) => (
+                            <div
+                                key={equipo.id}
+                                className="flex items-center mb-2"
                             >
-                                {equipo.nombre}
-                            </label>
-                        </div>
-                    ))}
+                                <input
+                                    type="checkbox"
+                                    id={"team" + equipo.id}
+                                    value={equipo.id}
+                                    onChange={handleTeamChange}
+                                    className="mr-2 rounded border-gray-300 focus:ring-blue-500"
+                                />
+                                <label
+                                    htmlFor={"team" + equipo.id}
+                                    className="text-gray-700"
+                                >
+                                    {equipo.nombre}
+                                </label>
+                            </div>
+                        ))
+                    )}
                     {errors.equiposSeleccionados && (
                         <p className="text-red-500 text-md mt-1">
                             {errors.equiposSeleccionados}
                         </p>
                     )}
-
-                    {/* Botón de Enviar */}
+                    
                     <div className="flex justify-center">
-                        <SuccessButton>Generar Fixture</SuccessButton>
+                        <SuccessButton disabled={equiposElegibles.length === 0}>
+                            Generar Fixture
+                        </SuccessButton>
                     </div>
                 </form>
             )}

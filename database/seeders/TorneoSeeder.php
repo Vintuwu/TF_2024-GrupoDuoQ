@@ -85,7 +85,7 @@ class TorneoSeeder extends Seeder
             'fechaFin' => null,
             'ubicacion' => 'Calle Vóley 789',
             'formato' => null, // Sin formato
-            'categoria_id' => 13,
+            'categoria_id' => 2,
             'deporte_id' => 3,
             'estado_id' => 1,
         ]);
